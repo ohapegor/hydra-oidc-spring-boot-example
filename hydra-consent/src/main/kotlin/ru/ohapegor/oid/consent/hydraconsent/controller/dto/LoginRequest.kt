@@ -4,5 +4,5 @@ data class LoginRequest(
         val loginChallenge: String,
         val email: String,
         val password: String,
-         val remember: Boolean
+        val remember: Boolean
 )

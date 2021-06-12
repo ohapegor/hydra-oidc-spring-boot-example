@@ -7,23 +7,19 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import javax.sql.DataSource
 
 
 @EnableWebSecurity
 class SecurityConfig(
-        private val dataSource: DataSource
+        private val userDetailsService: UserDetailsService
 ) : WebSecurityConfigurerAdapter() {
 
 
     override fun configure(http: HttpSecurity) {
         http
                 .csrf().disable()
-                // .userDetailsService(authenticationManagerBean())
                 .authorizeRequests { authorizeRequests ->
                     authorizeRequests
                             .antMatchers(HttpMethod.GET, "/login").permitAll()
@@ -35,21 +31,9 @@ class SecurityConfig(
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         val passwordEncoder = passwordEncoder()
-        auth//.userDetailsService(userDetailsService)
-                .jdbcAuthentication()
-                .dataSource(dataSource)
-                .withDefaultSchema()
+        auth
+                .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder)
-                .withUser(User
-                        .withUsername("foo@bar.com")
-                        .password(passwordEncoder.encode("foobar"))
-                        .roles("USER")
-                )
-    }
-
-    @Bean
-    override fun userDetailsService(): UserDetailsService {
-        return super.userDetailsService()
     }
 
     @Bean

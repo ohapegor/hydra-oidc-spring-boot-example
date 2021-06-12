@@ -6,9 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -54,6 +52,7 @@ class LoginController(
     @PostMapping("/login", consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE])
     fun login(loginRequest: LoginRequest, res: HttpServletResponse, principal: Principal) {
         logger.debug { ">> login request: $loginRequest" }
+
         val authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken(
                 loginRequest.email, loginRequest.password
         ))
@@ -64,5 +63,6 @@ class LoginController(
         logger.info { ">>principal acceptResp : $acceptResp" }
         res.sendRedirect(acceptResp.redirectTo)
     }
+
 
 }
