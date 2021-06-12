@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title></title></head>
+<body>
+<h1 id="login-title">Please log in</h1>
+<form action="login" method="POST">
+    <input type="hidden" name="_csrf" value="MSRDDBqJ-_qExkTtTJutvD9FSqHul2awhrlw">
+    <input type="hidden" name="challenge" value="82783f4060024c128f61ba56014979f7">
+    <table>
+        <tr>
+            <td><input type="email" id="email" name="email" value="" placeholder="email@foobar.com"></td>
+            <td>(it's "foo@bar.com")</td>
+        </tr>
+        <tr>
+            <td><input type="password" id="password" name="password"></td>
+            <td>(it's "foobar")</td>
+        </tr>
+    </table>
+    <input type="checkbox" id="remember" name="remember" value="1">
+    <label for="remember">Remember me</label><br>
+    <input type="submit" id="accept" name="submit" value="Log in">
+    <input type="submit" id="reject" name="submit" value="Deny access"></form>
+</body>
+</html>

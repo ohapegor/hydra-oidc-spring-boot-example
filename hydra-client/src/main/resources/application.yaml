@@ -1,0 +1,27 @@
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          aliexpress:
+            client-id: ali-client-id
+            client-secret: ali-client-secret
+            authorization-grant-type: authorization_code
+            redirect-uri: http://127.0.0.1:8080/callback
+            scope: openid,profile
+            clientAuthenticationMethod: basic
+        provider:
+          aliexpress:
+            authorization-uri: http://127.0.0.1:4444/oauth2/auth
+            token-uri: http://127.0.0.1:4444/oauth2/token
+            user-info-uri: http://127.0.0.1:4444/userinfo
+            user-name-attribute: sub
+            jwk-set-uri: http://127.0.0.1:4444/.well-known/jwks.json
+            authorization-grant-type: authorization_code,refresh_token
+            user-info-authentication-method: header
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web.client.RestTemplate: DEBUG
