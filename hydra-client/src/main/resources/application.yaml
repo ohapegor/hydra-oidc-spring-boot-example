@@ -1,4 +1,8 @@
-
+server:
+  servlet:
+    session:
+      cookie:
+        name: CLIENT_SESSION_ID
 spring:
   security:
     oauth2:
@@ -22,5 +26,5 @@ spring:
 
 logging:
   level:
-    root: DEBUG
+    root: INFO
     org.springframework.web.client.RestTemplate: DEBUG

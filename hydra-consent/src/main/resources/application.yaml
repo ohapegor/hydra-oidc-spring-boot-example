@@ -1,5 +1,9 @@
 server:
   port: 3000
+  servlet:
+    session:
+      cookie:
+        name: RESOURCE_SESSION_ID
 logging:
   level:
     ru.ohapegor: DEBUG

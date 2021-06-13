@@ -1,4 +1,4 @@
-package ru.ohapegor.oid.consent.hydraconsent.client
+package ru.ohapegor.oid.consent.hydraconsent.config
 
 import mu.KLogging
 import org.springframework.http.HttpRequest

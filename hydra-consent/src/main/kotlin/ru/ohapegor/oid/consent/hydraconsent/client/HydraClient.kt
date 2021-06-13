@@ -26,7 +26,7 @@ class HydraClient(
                 ?: error("missing LoginData")
     }
 
-    fun acceptLoginRequest(subject: String, loginChallenge: String, remember: Boolean = false): HydraAcceptLoginResponse {
+    fun acceptLoginRequest(subject: String, loginChallenge: String, remember: Boolean = true): HydraAcceptLoginResponse {
         val resp = restTemplate.exchange(
                 "$LOGIN_PATH/accept?login_challenge=$loginChallenge",
                 HttpMethod.PUT,
@@ -46,7 +46,7 @@ class HydraClient(
             consentChallenge: String,
             scopes: List<String>,
             grantAccessTokenAudience: List<String>,
-            remember: Boolean = false): HydraAcceptConsentResponse {
+            remember: Boolean = true): HydraAcceptConsentResponse {
         val resp = restTemplate.exchange(
                 "$CONSENT_PATH/accept?consent_challenge=$consentChallenge",
                 HttpMethod.PUT,
