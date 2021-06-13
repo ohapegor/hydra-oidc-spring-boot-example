@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<h1>An application requests access to your data!</h1>
+<form action="consent" method="POST">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="hidden" name="consentChallenge" th:value="${consentChallenge}">
+    <p>Hi <strong><span th:text="${userName}"></span></strong>, application <strong><span
+            th:text="${appName}"></span></strong> wants access resources on your behalf and to:</p>
+
+    <span th:each="scope: ${scopes}">
+            <input type="checkbox" th:id="${scope}" th:value="${scope}" name="grantScope">
+            <label th:for="${scope}" th:text="${scope}"></label><br>
+    </span>
+
+    <p>Do you want to be asked next time when this application wants to access your data? The application will
+        not be able to ask for more permissions without your consent.</p>
+    <ul></ul>
+    <p><input type="checkbox" id="remember" name="remember" value="1"><label for="remember">Do not ask me again</label>
+    </p>
+    <p>
+        <input type="submit" id="accept" name="submit" value="Allow access">
+        <input type="submit" id="reject" name="submit" value="Deny access">
+    </p>
+</form>
+</body>
+</html>

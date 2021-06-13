@@ -4,20 +4,34 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
-data class LoginData(
+data class HydraLoginRequest(
         val challenge: String,
-        val client: Client,
+        val client: HydraClient,
         //val oidc_context: OidcContext,
         val requestUrl: String,
         val requestedAccessTokenAudience: List<Any>,
         val requestedScope: List<String>,
         val sessionId: String,
         val skip: Boolean,
-        val subject: String
+        val subject: String,
 )
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
-data class Client(
+data class HydraConsentRequest(
+        val challenge: String,
+        val client: HydraClient,
+        //val oidc_context: OidcContext,
+        val requestUrl: String,
+        val requestedAccessTokenAudience: List<String>,
+        val requestedScope: List<String>,
+        val sessionId: String?,
+        val skip: Boolean,
+        val subject: String,
+        val loginSessionId: String
+)
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
+data class HydraClient(
         //val allowed_cors_origins: List<String>,
         //val audience: List<String>,
         val clientId: String,
@@ -43,7 +57,7 @@ data class Client(
 )
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
-data class AcceptLoginRequestBody(
+data class HydraAcceptLoginRequest(
         val acr: String? = null,
         //val context: Context? = null,
         val forceSubjectIdentifier: String? = null,
@@ -53,6 +67,21 @@ data class AcceptLoginRequestBody(
 )
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
-data class AcceptLoginResponsetBody(
+data class HydraAcceptConsentRequest(
+        val remember: Boolean = true,
+        //session expire in seconds, 0 - means never expire
+        val rememberFor: Int? = null,
+       // val handedAt: Instant = Instant.now(),
+        val grantAccessTokenAudience: List<String>,
+        val grantScope: List<String>
+)
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
+data class HydraAcceptLoginResponse(
+        val redirectTo: String
+)
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
+data class HydraAcceptConsentResponse(
         val redirectTo: String
 )

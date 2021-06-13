@@ -18,10 +18,9 @@ spring:
             user-info-uri: http://127.0.0.1:4444/userinfo
             user-name-attribute: sub
             jwk-set-uri: http://127.0.0.1:4444/.well-known/jwks.json
-            authorization-grant-type: authorization_code,refresh_token
             user-info-authentication-method: header
 
 logging:
   level:
-    root: INFO
+    root: DEBUG
     org.springframework.web.client.RestTemplate: DEBUG

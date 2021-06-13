@@ -1,8 +1,6 @@
 package ru.ohapegor.oidc.hydraclient.controller
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
-import com.fasterxml.jackson.databind.PropertyNamingStrategy
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpEntity
@@ -11,7 +9,6 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.annotation.AuthenticationPrincipal
-import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenResponse
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
@@ -36,8 +33,7 @@ class OidController(
 
     @GetMapping("/callback")
     fun callback(@RequestParam code: String, req: HttpServletRequest): String? {
-        // if (code.isNotBlank()) return code
-
+        log.info(">> calback with code = $code")
         val map: MultiValueMap<String, String> = LinkedMultiValueMap()
         map.add("code", code)
         map.add("grant_type", "authorization_code")
