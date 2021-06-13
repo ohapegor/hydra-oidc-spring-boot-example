@@ -1,6 +1,5 @@
 package ru.ohapegor.oid.consent.hydraconsent.service
 
-import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.MalformedJwtException
@@ -8,8 +7,8 @@ import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.UnsupportedJwtException
 import mu.KLogging
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Component
+import ru.ohapegor.oid.consent.hydraconsent.model.User
 import java.security.SignatureException
 import java.util.Date
 
@@ -26,7 +25,7 @@ class JwtService(
 
     fun generateAccessToken(user: User): String {
         return Jwts.builder()
-                .setSubject(user.username)
+                .setSubject(user.id)
                 .setIssuer(jwtIssuer)
                 .setIssuedAt(Date())
                 .setExpiration(Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000)) // 1 week
@@ -34,7 +33,7 @@ class JwtService(
                 .compact()
     }
 
-    fun getUsername(token: String): String = Jwts.parser()
+    fun getUserId(token: String): String = Jwts.parser()
             .setSigningKey(jwtSecret)
             .parseClaimsJws(token)
             .body.subject

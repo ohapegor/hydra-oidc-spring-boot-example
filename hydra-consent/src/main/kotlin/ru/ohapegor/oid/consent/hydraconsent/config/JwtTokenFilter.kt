@@ -4,10 +4,10 @@ import mu.KotlinLogging
 import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
+import ru.ohapegor.oid.consent.hydraconsent.repository.UsersRepository
 import ru.ohapegor.oid.consent.hydraconsent.service.JwtService
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
@@ -19,7 +19,7 @@ const val ACCESS_TOKEN_COOKIE = "jwtAccessToken"
 @Component
 class JwtTokenFilter(
         private val jwtService: JwtService,
-        private val userDetailsService: UserDetailsService
+        private val usersRepository: UsersRepository
 ) : OncePerRequestFilter() {
 
     companion object {
@@ -42,13 +42,13 @@ class JwtTokenFilter(
         }
 
         // Get user identity and set it on the spring security context
-        val userName = jwtService.getUsername(accessToken)
-        val userDetails = userDetailsService.loadUserByUsername(userName)
-        if (userDetails == null) {
-            log.error { "user not found by name $userName" }
+        val userId = jwtService.getUserId(accessToken)
+        val user = usersRepository.findById(userId).orElse(null)
+        if (user == null) {
+            log.error { "user not found by id $userId" }
         }
         val authentication = UsernamePasswordAuthenticationToken(
-                userDetails, null, userDetails.authorities
+                user, null, user.authorities
         )
         authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
         SecurityContextHolder.getContext().authentication = authentication

@@ -19,7 +19,6 @@ class SecurityConfig(
 
     override fun configure(http: HttpSecurity) {
         http
-                .csrf().disable()
                 .authorizeRequests { authorizeRequests ->
                     authorizeRequests
                             .antMatchers(HttpMethod.GET, "/login").permitAll()

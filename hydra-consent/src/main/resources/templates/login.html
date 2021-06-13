@@ -4,8 +4,8 @@
 <body>
 <h1 id="login-title">Please log in</h1>
 <form action="login" method="POST">
-    <input type="hidden" name="_csrf" value="MSRDDBqJ-_qExkTtTJutvD9FSqHul2awhrlw">
-    <input type="hidden" name="challenge" value="82783f4060024c128f61ba56014979f7">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <input type="hidden" name="loginChallenge" th:value="${loginChallenge}">
     <table>
         <tr>
             <td><input type="email" id="email" name="email" value="" placeholder="foo@bar.com"></td>
