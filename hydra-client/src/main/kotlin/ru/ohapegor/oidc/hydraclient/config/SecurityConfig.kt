@@ -10,12 +10,9 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests { authorizeRequests ->
-            authorizeRequests
-                    .anyRequest().authenticated()
+            authorizeRequests.anyRequest().authenticated()
+        }.oauth2Login { oauth2Login ->
+            oauth2Login.redirectionEndpoint().baseUri("/callback")
         }
-                .oauth2Login { oauth2Login ->
-                    //oauth2Login.userInfoEndpoint().oidcUserService(OidcUserService())
-                    oauth2Login.redirectionEndpoint().baseUri("/callback")
-                }
     }
 }
