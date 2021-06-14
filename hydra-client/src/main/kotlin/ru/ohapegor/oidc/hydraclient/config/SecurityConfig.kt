@@ -12,11 +12,11 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         val aliexpressScopes: MutableSet<String> = HashSet()
         aliexpressScopes.add("profile")
+        aliexpressScopes.add("email")
         val aliOidUserService = OidcUserService()
         aliOidUserService.setAccessibleScopes(aliexpressScopes)
         http.authorizeRequests { authorizeRequests ->
             authorizeRequests
-                    //.antMatchers("/oauth2/authorization/aliexpress").permitAll()
                     .anyRequest().authenticated()
         }
                 .oauth2Login { oauth2Login ->
