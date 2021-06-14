@@ -49,6 +49,11 @@ class ConsentController(
 
     @PostMapping("/consent", consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE])
     fun login(consentRequest: ConsentRequest, res: HttpServletResponse) {
+        if (consentRequest.submit == "Deny access") {
+            val rejectResp = hydraClient.rejectConsentRequest(consentRequest.consentChallenge)
+            res.sendRedirect(rejectResp.redirectTo)
+            return
+        }
         val hydraConsentRequest = hydraClient.getConsentRequest(consentRequest.consentChallenge)
         logger.debug { ">> login request: $consentRequest" }
         val acceptResp = hydraClient.acceptConsentRequest(

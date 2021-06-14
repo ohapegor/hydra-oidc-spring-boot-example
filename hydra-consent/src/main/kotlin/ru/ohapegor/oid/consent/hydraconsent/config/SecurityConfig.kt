@@ -23,8 +23,6 @@ class SecurityConfig(
                     authorizeRequests
                             .antMatchers(HttpMethod.GET, "/login").permitAll()
                             .antMatchers(HttpMethod.POST, "/login").permitAll()
-                            .antMatchers("/free","/h2-console").permitAll()
-                            .anyRequest().permitAll()
                 }
     }
 

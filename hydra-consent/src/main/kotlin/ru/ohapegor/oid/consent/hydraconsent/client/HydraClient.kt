@@ -56,6 +56,21 @@ class HydraClient(
         error("rejectLogin response failed with status ${resp.statusCode}")
     }
 
+    fun rejectConsentRequest(consentChallenge: String): HydraCommonRedirectResponse {
+        val resp = restTemplate.exchange(
+                "$CONSENT_PATH/reject?consent_challenge=$consentChallenge",
+                HttpMethod.PUT,
+                HttpEntity(
+                        HydraRejectRequest(
+                                error = "access_denied",
+                                errorDescription = "The resource owner denied the request"
+                        )),
+                HydraCommonRedirectResponse::class.java,
+        )
+        if (resp.statusCode.is2xxSuccessful) return resp.body!!
+        error("rejectConsent response failed with status ${resp.statusCode}")
+    }
+
     fun getConsentRequest(consentChallenge: String): HydraConsentRequest {
         return restTemplate.getForObject("$CONSENT_PATH?consent_challenge=$consentChallenge", HydraConsentRequest::class.java)
                 ?: error("missing LoginData")
