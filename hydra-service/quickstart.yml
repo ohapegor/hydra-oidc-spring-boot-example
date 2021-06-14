@@ -30,7 +30,7 @@ services:
         read_only: false
       -
         type: bind
-        source: ./contrib/quickstart/5-min
+        source: ./example-hydra-config
         target: /etc/config/hydra
     environment:
       - DSN=sqlite:///var/lib/sqlite/db.sqlite?_fk=true
@@ -54,21 +54,13 @@ services:
         read_only: false
       -
         type: bind
-        source: ./contrib/quickstart/5-min
+        source: ./example-hydra-config
         target: /etc/config/hydra
     restart: on-failure
     networks:
       - intranet
 
-  consent:
-    environment:
-      - HYDRA_ADMIN_URL=http://hydra:4445
-    image: oryd/hydra-login-consent-node:v1.10.2
-    ports:
-      - "3000:3000"
-    restart: unless-stopped
-    networks:
-      - intranet
+  #
 
 networks:
   intranet:
