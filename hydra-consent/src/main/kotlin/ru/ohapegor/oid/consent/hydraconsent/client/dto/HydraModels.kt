@@ -86,12 +86,7 @@ data class HydraSession(
 
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
-data class HydraAcceptLoginResponse(
-        val redirectTo: String
-)
-
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
-data class HydraAcceptConsentResponse(
+data class HydraCommonRedirectResponse(
         val redirectTo: String
 )
 
@@ -122,17 +117,6 @@ data class HydraIdToken(
 )
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
-data class HydraClaims(
-        val aud: List<String>,
-        val auth_time: Int,
-        val email: String,
-        val iat: Int,
-        val iss: String,
-        val rat: Int,
-        val sub: String
-)
-
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 data class HydraAddress(
         val country: String? = null,
         val formatted: String? = null,
@@ -140,4 +124,13 @@ data class HydraAddress(
         val postalCode: String? = null,
         val region: String? = null,
         val streetAddress: String? = null
+)
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
+data class HydraRejectRequest(
+        val error: String? = null,
+        val errorDebug: String? = null,
+        val errorDescription: String? = null,
+        val errorHint: String? = null,
+        val statusCode: Int? = null
 )

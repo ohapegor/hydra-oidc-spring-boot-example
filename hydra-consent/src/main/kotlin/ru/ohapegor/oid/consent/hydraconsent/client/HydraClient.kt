@@ -5,13 +5,13 @@ import org.springframework.http.HttpMethod
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAcceptConsentRequest
-import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAcceptConsentResponse
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAcceptLoginRequest
-import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAcceptLoginResponse
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAddress
+import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraCommonRedirectResponse
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraConsentRequest
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraIdToken
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraLoginRequest
+import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraRejectRequest
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraSession
 import ru.ohapegor.oid.consent.hydraconsent.service.SecurityUtils.currentUser
 
@@ -30,15 +30,30 @@ class HydraClient(
                 ?: error("missing LoginData")
     }
 
-    fun acceptLoginRequest(subject: String, loginChallenge: String, remember: Boolean = true): HydraAcceptLoginResponse {
+    fun acceptLoginRequest(subject: String, loginChallenge: String, remember: Boolean = true): HydraCommonRedirectResponse {
         val resp = restTemplate.exchange(
                 "$LOGIN_PATH/accept?login_challenge=$loginChallenge",
                 HttpMethod.PUT,
                 HttpEntity(HydraAcceptLoginRequest(subject = subject, remember = remember)),
-                HydraAcceptLoginResponse::class.java,
+                HydraCommonRedirectResponse::class.java,
         )
         if (resp.statusCode.is2xxSuccessful) return resp.body!!
         error("acceptLogin response failed with status ${resp.statusCode}")
+    }
+
+    fun rejectLoginRequest(loginChallenge: String): HydraCommonRedirectResponse {
+        val resp = restTemplate.exchange(
+                "$LOGIN_PATH/reject?login_challenge=$loginChallenge",
+                HttpMethod.PUT,
+                HttpEntity(
+                        HydraRejectRequest(
+                                error = "access_denied",
+                                errorDescription = "The resource owner denied the request"
+                        )),
+                HydraCommonRedirectResponse::class.java,
+        )
+        if (resp.statusCode.is2xxSuccessful) return resp.body!!
+        error("rejectLogin response failed with status ${resp.statusCode}")
     }
 
     fun getConsentRequest(consentChallenge: String): HydraConsentRequest {
@@ -50,7 +65,7 @@ class HydraClient(
             consentChallenge: String,
             scopes: List<String>,
             grantAccessTokenAudience: List<String>,
-            remember: Boolean = true): HydraAcceptConsentResponse {
+            remember: Boolean = true): HydraCommonRedirectResponse {
         val user = currentUser()
         val resp = restTemplate.exchange(
                 "$CONSENT_PATH/accept?consent_challenge=$consentChallenge",
@@ -71,7 +86,7 @@ class HydraClient(
                                 phoneNumber = "+79876543210",
                                 //and so on
                         )))),
-                HydraAcceptConsentResponse::class.java,
+                HydraCommonRedirectResponse::class.java,
         )
         if (resp.statusCode.is2xxSuccessful) return resp.body!!
         error("acceptConsent failed with status ${resp.statusCode}")

@@ -54,6 +54,11 @@ class LoginController(
     @PostMapping("/login", consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE])
     fun login(loginRequest: LoginRequest, res: HttpServletResponse) {
         logger.debug { ">> login request: $loginRequest" }
+        if (loginRequest.submit == "Deny access") {
+            val rejectResp = hydraClient.rejectLoginRequest(loginRequest.loginChallenge)
+            res.sendRedirect(rejectResp.redirectTo)
+            return
+        }
         val authentication = authenticationManager.authenticate(UsernamePasswordAuthenticationToken(
                 loginRequest.email, loginRequest.password
         ))
