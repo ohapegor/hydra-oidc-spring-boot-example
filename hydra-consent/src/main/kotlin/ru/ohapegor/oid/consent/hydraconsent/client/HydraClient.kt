@@ -8,8 +8,12 @@ import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAcceptConsentRequest
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAcceptConsentResponse
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAcceptLoginRequest
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAcceptLoginResponse
+import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraAddress
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraConsentRequest
+import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraIdToken
 import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraLoginRequest
+import ru.ohapegor.oid.consent.hydraconsent.client.dto.HydraSession
+import ru.ohapegor.oid.consent.hydraconsent.service.SecurityUtils.currentUser
 
 @Component
 class HydraClient(
@@ -47,16 +51,30 @@ class HydraClient(
             scopes: List<String>,
             grantAccessTokenAudience: List<String>,
             remember: Boolean = true): HydraAcceptConsentResponse {
+        val user = currentUser()
         val resp = restTemplate.exchange(
                 "$CONSENT_PATH/accept?consent_challenge=$consentChallenge",
                 HttpMethod.PUT,
                 HttpEntity(HydraAcceptConsentRequest(
                         grantScope = scopes,
                         grantAccessTokenAudience = grantAccessTokenAudience,
-                        remember = remember)),
+                        remember = remember,
+                        session = HydraSession(idToken = HydraIdToken(
+                                subject = user.id,
+                                email = user.email,
+                                familyName = user.lastname,
+                                nickName = user.email,
+                                givenName = user.firstname,
+                                fullName = "${user.firstname} ${user.lastname}",
+                                address = HydraAddress(country = "RU", region = "Moscow", streetAddress = "Kremlin"),
+                                locale = "ru_RU",
+                                phoneNumber = "+79876543210",
+                                //and so on
+                        )))),
                 HydraAcceptConsentResponse::class.java,
         )
         if (resp.statusCode.is2xxSuccessful) return resp.body!!
         error("acceptConsent failed with status ${resp.statusCode}")
     }
+
 }

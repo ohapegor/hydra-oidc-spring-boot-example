@@ -1,5 +1,6 @@
 package ru.ohapegor.oid.consent.hydraconsent.client.dto
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.annotation.JsonNaming
 
@@ -71,10 +72,18 @@ data class HydraAcceptConsentRequest(
         val remember: Boolean = true,
         //session expire in seconds, 0 - means never expire
         val rememberFor: Int? = null,
-       // val handedAt: Instant = Instant.now(),
+        // val handedAt: Instant = Instant.now(),
         val grantAccessTokenAudience: List<String>,
-        val grantScope: List<String>
+        val grantScope: List<String>,
+        val session: HydraSession,
 )
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
+data class HydraSession(
+        val idToken: HydraIdToken? = null,
+        val access_token: Map<String, String>? = null,
+)
+
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 data class HydraAcceptLoginResponse(
@@ -84,4 +93,51 @@ data class HydraAcceptLoginResponse(
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 data class HydraAcceptConsentResponse(
         val redirectTo: String
+)
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class HydraIdToken(
+        val subject: String,
+        val address: HydraAddress? = null,
+        val birthdate: String? = null,
+        // val claims: Claims,
+        val email: String? = null,
+        val emailVerified: String? = null,
+        val familyName: String? = null,
+        val fullName: String? = null,
+        val gender: String? = null,
+        val givenName: String? = null,
+        val locale: String? = null,
+        val middleName: String? = null,
+        val nickName: String? = null,
+        val phoneNumber: String? = null,
+        val phoneNumberVerified: String? = null,
+        val picture: String? = null,
+        val preferredUsername: String? = null,
+        val profile: String? = null,
+        val updatedAt: String? = null,
+        val website: String? = null,
+        val zoneInfo: String? = null
+)
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
+data class HydraClaims(
+        val aud: List<String>,
+        val auth_time: Int,
+        val email: String,
+        val iat: Int,
+        val iss: String,
+        val rat: Int,
+        val sub: String
+)
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
+data class HydraAddress(
+        val country: String? = null,
+        val formatted: String? = null,
+        val locality: String? = null,
+        val postalCode: String? = null,
+        val region: String? = null,
+        val streetAddress: String? = null
 )

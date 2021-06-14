@@ -6,15 +6,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService
 
 
+
 @Configuration
 class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
-        val aliexpressScopes: MutableSet<String> = HashSet()
-        aliexpressScopes.add("profile")
-        aliexpressScopes.add("email")
         val aliOidUserService = OidcUserService()
-        aliOidUserService.setAccessibleScopes(aliexpressScopes)
+        aliOidUserService.setAccessibleScopes(mutableSetOf("profile","email"))
         http.authorizeRequests { authorizeRequests ->
             authorizeRequests
                     .anyRequest().authenticated()

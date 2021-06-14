@@ -13,7 +13,7 @@ spring:
             client-secret: ali-client-secret
             authorization-grant-type: authorization_code
             redirect-uri: http://127.0.0.1:8080/callback
-            scope: openid,profile
+            scope: openid,profile,email
             clientAuthenticationMethod: basic
         provider:
           aliexpress:
@@ -26,5 +26,5 @@ spring:
 
 logging:
   level:
-    root: DEBUG
+    root: INFO
     org.springframework.web.client.RestTemplate: DEBUG
