@@ -2,7 +2,6 @@ package ru.ohapegor.oid.consent.hydraconsent.controller
 
 import mu.KLogging
 import org.springframework.http.MediaType
-import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
@@ -10,16 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import ru.ohapegor.oid.consent.hydraconsent.client.HydraClient
 import ru.ohapegor.oid.consent.hydraconsent.controller.dto.ConsentRequest
-import ru.ohapegor.oid.consent.hydraconsent.service.JwtService
 import ru.ohapegor.oid.consent.hydraconsent.service.SecurityUtils.currentUser
 import javax.servlet.http.HttpServletResponse
 
 
 @Controller
 class ConsentController(
-        private val hydraClient: HydraClient,
-        private val authenticationManager: AuthenticationManager,
-        private val jwtService: JwtService,
+        private val hydraClient: HydraClient
 ) {
 
     companion object : KLogging()
