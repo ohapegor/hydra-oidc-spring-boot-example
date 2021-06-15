@@ -38,11 +38,6 @@ class JwtService(
             .parseClaimsJws(token)
             .body.subject
 
-    fun getExpirationDate(token: String): Date = Jwts.parser()
-            .setSigningKey(jwtSecret)
-            .parseClaimsJws(token)
-            .body.expiration
-
     fun validate(token: String): Boolean {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token)
