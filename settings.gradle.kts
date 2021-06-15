@@ -1,3 +1,3 @@
-rootProject.name = "hydra-spring-boot-example"
+rootProject.name = "hydra-oidc-spring-boot-example"
 include("hydra-client")
 include("hydra-consent")
