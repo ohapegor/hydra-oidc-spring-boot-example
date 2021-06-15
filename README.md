@@ -3,7 +3,7 @@
 ### 1. Run example hydra service
 
 ```shell script
-docker-compose -f hydra-service/quickstart.yml -f hydra-service/quickstart-postgres.yml up -d
+docker-compose -f hydra-service/quickstart.yml up -d
 ```
 
 ### 2. Create example oidc client
