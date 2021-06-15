@@ -81,7 +81,7 @@ data class HydraAcceptConsentRequest(
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 data class HydraSession(
         val idToken: HydraIdToken? = null,
-        val access_token: Map<String, String>? = null,
+        val accessToken: Map<String, String>? = null,
 )
 
 
